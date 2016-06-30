@@ -1,12 +1,12 @@
-package test;
+package main;
 
-import main.Program;
 import org.junit.After;
+
+import static main.StubbedInputStream.stubInputStream;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.containsString;
-import static test.StubbedInputStream.stubInputStream;
 
 import java.io.*;
 
@@ -70,7 +70,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void talk_to_librarian() {
+    public void talk_to_librarian_when_not_loggedIn() {
         System.setOut(new PrintStream(outputStream));
         System.setIn(stubInputStream().toReturn(TALK_TO_LIBRARIAN).then(EXIT_CODE).atSomePoint());
 

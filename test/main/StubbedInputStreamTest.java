@@ -1,9 +1,10 @@
-package test;
+package main;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
-import static test.StubbedInputStream.stubInputStream;
+import static main.StubbedInputStream.stubInputStream;
 
 import java.io.IOException;
 import java.util.LinkedList;
