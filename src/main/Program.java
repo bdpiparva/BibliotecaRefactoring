@@ -1,33 +1,31 @@
 package main;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Program {
-    private static boolean loggedIn = false;
+
     private static String savedLibraryNumber = "";
 
     public static void main(String[] args) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        LibraryManagment libraryManagment = new LibraryManagment();
+
+
         while (true) {
-            showWelcomeMessageAndMenu();
+            libraryManagment.showWelcomeMessageAndMenu();
+
             System.out.println("Your Selection: ");
 
-            int i1 = readUserChoice();
+            int userMainMenuSelection = readUserChoice(reader);
 
-            if (i1 == 1) {
-                showBookCatalogMenu();
-            } else if (i1 == 2) {
+            if (userMainMenuSelection == 1) {
+                libraryManagment.showBookCatalogMenu();
+            } else if (userMainMenuSelection == 2) {
                 System.out.println(" Please enter the number of the book you wish to checkout: ");
-                int i2 = 0;
-                try {
-                    i2 = readUserChoice();
-                } catch (Exception e) {
-                    // Do you know what numbers are!!!
-                    System.out.println("Enter a valid integer!!");
-
-                }
-                switch (i2) {
+                int userBookSelection = readUserChoice(reader);
+                switch (userBookSelection) {
                     case 1:
                         System.out.println("\n");
                         System.out.println(" Thank You! Enjoy the book.");
@@ -48,8 +46,8 @@ public class Program {
                         System.out.println("\n");
                         System.out.println("Sorry we don't have that book yet.");
                 }
-            } else if (i1 == 3) {
-                if (loggedIn()) {
+            } else if (userMainMenuSelection == 3) {
+                if (libraryManagment.loggedIn()) {
                     System.out.println("\n");
                     System.out.println("Your library number is " + savedLibraryNumber);
                 } else {
@@ -57,19 +55,20 @@ public class Program {
                     System.out.println("\n");
                     System.out.println("Please talk to Librarian. Thank you.");
                 }
-            } else if (i1 == 4) {
-                showMovieList();
-            } else if (i1 == 5) {
-                clearLogin();
+            } else if (userMainMenuSelection == 4) {
+                libraryManagment.showMovieList();
+            } else if (userMainMenuSelection == 5) {
+                libraryManagment.clearLogin();
+                savedLibraryNumber = "";
                 System.out.println("Enter your library number");
                 try {
-                    String libraryNumber = getBufferedReader().readLine();
-                    if (validLibraryNumber(libraryNumber)) {
+                    String libraryNumber = reader.readLine();
+                    if (libraryManagment.isValidLibraryNumber(libraryNumber)) {
                         try {
                             System.out.println("Enter your Password: ");
-                            String password = getBufferedReader().readLine();
-                            if (validPassword(password)) {
-                                loggedIn = true;
+                            String password = reader.readLine();
+                            if (libraryManagment.validPassword(password)) {
+                                libraryManagment.loggedIn = true;
                                 savedLibraryNumber = libraryNumber;
                             }
                         } catch (Exception e) {
@@ -80,7 +79,7 @@ public class Program {
 
                 }
 
-            } else if (i1 == 9) {
+            } else if (userMainMenuSelection == 9) {
                 System.out.println("Quitting...");
                 break;
             } else {
@@ -90,79 +89,16 @@ public class Program {
         }
     }
 
-    private static void showMovieList() {
-        System.out.println(createMovie("Rocky", "John G. Avildsen", "10"));
-        System.out.println(createMovie("Rocky II", "John G. Avildsen", "9"));
-        System.out.println(createMovie("Rocky III", "John G. Avildsen", "8"));
-        System.out.println(createMovie("Rocky IV", "John G. Avildsen", "7"));
-        System.out.println(createMovie("Rocky V", "John G. Avildsen", "8"));
-        System.out.println(createMovie("Drainage", "Francisco Trindade", "N/A"));
-        System.out.println(createMovie("The Shawshank Redemption", "Frank Darabont", "10"));
-        System.out.println(createMovie("The Godfather", "Francis Ford Coppola", "7"));
-        System.out.println(createMovie("Inception", "Frank Darabont", "10"));
-        System.out.println(createMovie("Pulp Fiction", "Quentin Tarantino", "6"));
-    }
+    private static int readUserChoice(BufferedReader reader) {
 
-    private static void showBookCatalogMenu() {
-        System.out.println(" 1. Sweet Valley High vol. 4 by John Travolta ");
-        System.out.println(" 2. eXtreme Programming Explained by Kent Beck ");
-        System.out.println(" 3. How to Win Friends and Influence People by Dale Carnagie ");
-        System.out.println(" 4. How to Cheat at TWU Assignements by Anonymous ");
-    }
-
-    private static void showWelcomeMessageAndMenu() {
-        System.out.println("**********************************************************");
-        System.out.println("* Welcome to The Bangalore Public Library System - Biblioteca *");
-        System.out.println("**********************************************************");
-        System.out.println("*                Menu                                    *");
-        System.out.println("*         =====================                          *");
-        System.out.println("*         1. List Book Catalog                           *");
-        System.out.println("*         2. Check out Book                              *");
-        System.out.println("*         3. Check Library Number                        *");
-        System.out.println("*         4. Movie Listing                               *");
-        System.out.println("*         5. Login                                       *");
-        System.out.println("*         9. Exit                                        *");
-        System.out.println("**********************************************************");
-
-    }
-
-    private static int readUserChoice() {
-
-        BufferedReader reader = getBufferedReader();
         try {
             String value = reader.readLine();
             return Integer.parseInt(value);
         } catch (Exception e) {
             System.out.println("Enter a valid integer!!");
-            return readUserChoice();
+            return readUserChoice(reader);
         }
     }
 
-    private static BufferedReader getBufferedReader() {
-        InputStreamReader inputStream = new InputStreamReader(System.in);
-        return new BufferedReader(inputStream);
-    }
-
-    private static boolean validPassword(String password) {
-        return "bhaisahab".equals(password);
-    }
-
-    private static boolean validLibraryNumber(String libraryNumber) {
-        return libraryNumber.matches("\\d\\d\\d-\\d\\d\\d\\d");
-    }
-
-    private static boolean loggedIn() {
-        return loggedIn;
-    }
-
-
-    private static void clearLogin() {
-        loggedIn = false;
-        savedLibraryNumber = "";
-    }
-
-    private static String createMovie(String movieTitle, String movieDirector, String movieRanking) {
-        return movieTitle + " - Director: " + movieDirector + " Rating: " + movieRanking;
-    }
 }
 

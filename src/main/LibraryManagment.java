@@ -15,7 +15,6 @@ public class LibraryManagment {
 
     public  void clearLogin() {
         loggedIn = false;
-//
     }
 
 
@@ -59,4 +58,13 @@ public class LibraryManagment {
         System.out.println(" 4. How to Cheat at TWU Assignements by Anonymous ");
 
     }
+
+    public boolean isValidLibraryNumber(String libraryNumber) {
+        return libraryNumber.matches("\\d\\d\\d-\\d\\d\\d\\d");
+    }
+
+    public boolean validPassword(String password) {
+        return "bhaisahab".equals(password);
+    }
+
 }
