@@ -136,7 +136,7 @@ public class ProgramTest {
         assertThat(outputStream.toString(), containsString("Please talk to Librarian. Thank you."));
     }
 
-    private void launchApp() {
+    private void launchApp()  {
         Program.main(new String[]{});
     }
 

@@ -10,21 +10,13 @@ public class Program {
 
     public static void main(String[] args) {
         while (true) {
-            showWelcomeMessage();
+            showWelcomeMessageAndMenu();
+            System.out.println("Your Selection: ");
 
-            int i1 = 0;
-            try {
-                i1 = readUserChoice();
-            } catch (IOException e) {
-                System.out.println("Enter a valid integer!!");
-            }
-
+            int i1 = readUserChoice();
 
             if (i1 == 1) {
-                System.out.println(" 1. Sweet Valley High vol. 4 by John Travolta ");
-                System.out.println(" 2. eXtreme Programming Explained by Kent Beck ");
-                System.out.println(" 3. How to Win Friends and Influence People by Dale Carnagie ");
-                System.out.println(" 4. How to Cheat at TWU Assignements by Anonymous ");
+                showBookCatalogMenu();
             } else if (i1 == 2) {
                 System.out.println(" Please enter the number of the book you wish to checkout: ");
                 int i2 = 0;
@@ -66,25 +58,16 @@ public class Program {
                     System.out.println("Please talk to Librarian. Thank you.");
                 }
             } else if (i1 == 4) {
-                System.out.println(createMovie("Rocky", "John G. Avildsen", "10"));
-                System.out.println(createMovie("Rocky II", "John G. Avildsen", "9"));
-                System.out.println(createMovie("Rocky III", "John G. Avildsen", "8"));
-                System.out.println(createMovie("Rocky IV", "John G. Avildsen", "7"));
-                System.out.println(createMovie("Rocky V", "John G. Avildsen", "8"));
-                System.out.println(createMovie("Drainage", "Francisco Trindade", "N/A"));
-                System.out.println(createMovie("The Shawshank Redemption", "Frank Darabont", "10"));
-                System.out.println(createMovie("The Godfather", "Francis Ford Coppola", "7"));
-                System.out.println(createMovie("Inception", "Frank Darabont", "10"));
-                System.out.println(createMovie("Pulp Fiction", "Quentin Tarantino", "6"));
+                showMovieList();
             } else if (i1 == 5) {
                 clearLogin();
                 System.out.println("Enter your library number");
                 try {
-                    String libraryNumber = reader.readLine();
+                    String libraryNumber = getBufferedReader().readLine();
                     if (validLibraryNumber(libraryNumber)) {
                         try {
                             System.out.println("Enter your Password: ");
-                            String password = reader.readLine();
+                            String password = getBufferedReader().readLine();
                             if (validPassword(password)) {
                                 loggedIn = true;
                                 savedLibraryNumber = libraryNumber;
@@ -107,7 +90,27 @@ public class Program {
         }
     }
 
-    private static void showWelcomeMessage() {
+    private static void showMovieList() {
+        System.out.println(createMovie("Rocky", "John G. Avildsen", "10"));
+        System.out.println(createMovie("Rocky II", "John G. Avildsen", "9"));
+        System.out.println(createMovie("Rocky III", "John G. Avildsen", "8"));
+        System.out.println(createMovie("Rocky IV", "John G. Avildsen", "7"));
+        System.out.println(createMovie("Rocky V", "John G. Avildsen", "8"));
+        System.out.println(createMovie("Drainage", "Francisco Trindade", "N/A"));
+        System.out.println(createMovie("The Shawshank Redemption", "Frank Darabont", "10"));
+        System.out.println(createMovie("The Godfather", "Francis Ford Coppola", "7"));
+        System.out.println(createMovie("Inception", "Frank Darabont", "10"));
+        System.out.println(createMovie("Pulp Fiction", "Quentin Tarantino", "6"));
+    }
+
+    private static void showBookCatalogMenu() {
+        System.out.println(" 1. Sweet Valley High vol. 4 by John Travolta ");
+        System.out.println(" 2. eXtreme Programming Explained by Kent Beck ");
+        System.out.println(" 3. How to Win Friends and Influence People by Dale Carnagie ");
+        System.out.println(" 4. How to Cheat at TWU Assignements by Anonymous ");
+    }
+
+    private static void showWelcomeMessageAndMenu() {
         System.out.println("**********************************************************");
         System.out.println("* Welcome to The Bangalore Public Library System - Biblioteca *");
         System.out.println("**********************************************************");
@@ -120,15 +123,24 @@ public class Program {
         System.out.println("*         5. Login                                       *");
         System.out.println("*         9. Exit                                        *");
         System.out.println("**********************************************************");
-        System.out.println("Your Selection: ");
+
     }
 
-    private static int readUserChoice() throws IOException {
+    private static int readUserChoice() {
 
+        BufferedReader reader = getBufferedReader();
+        try {
+            String value = reader.readLine();
+            return Integer.parseInt(value);
+        } catch (Exception e) {
+            System.out.println("Enter a valid integer!!");
+            return readUserChoice();
+        }
+    }
+
+    private static BufferedReader getBufferedReader() {
         InputStreamReader inputStream = new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(inputStream);
-        String value = reader.readLine();
-        return Integer.parseInt(value);
+        return new BufferedReader(inputStream);
     }
 
     private static boolean validPassword(String password) {
